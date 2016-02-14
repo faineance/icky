@@ -1,7 +1,7 @@
-cmake_minimum_required(VERSION 2.8) 
+cmake_minimum_required(VERSION 2.8)
 project(icky)
 
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=c0x")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}")
 set(CMAKE_BUILD_TYPE Debug)
 set(SOURCE_FILES main.c vm.h vm.c debug.h)
 add_executable(icky ${SOURCE_FILES})
