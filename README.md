@@ -1,2 +1,6 @@
-# icky
-Doing that awful thing with gcc computed gotos 
+# icky 
+( AKA How not to c).
+# Build 
+```
+mkdir build && cd build && cmake ..
+```
