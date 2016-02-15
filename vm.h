@@ -32,6 +32,7 @@ typedef enum {
     IADD = 0x02,
     ISUB = 0x03,
     IMUL = 0x04,
+    HALT = 0x05,
 } Instruction;
 static uint8_t vm_fetch(VM *vm);
 

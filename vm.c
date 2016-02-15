@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "vm.h"
 #include "debug.h"
-#define  DISPATCH if (vm->DP < vm->code_len)  { goto *labels[vm->code[vm->DP++]]; } else { goto end; }
+#define  DISPATCH  { goto *labels[vm->code[vm->DP++]]; }
 
 static inline uint8_t vm_fetch(VM *vm) {
     vm->DP += 1;
@@ -18,7 +18,7 @@ uint16_t vm_pop(VM *vm) {
 }
 
 void vm_run(VM *vm) {
-    static  void* labels[5] = { &&push, &&pop, &&iadd, &&isub, &&imul };
+    static  void* labels[6] = { &&push, &&pop, &&iadd, &&isub, &&imul, &&halt};
 
     uint8_t d1, d2;
     uint16_t v;
@@ -46,7 +46,7 @@ void vm_run(VM *vm) {
         vm_push(vm, vm_pop(vm) * vm_pop(vm));
         DISPATCH
 
-    end:
+    halt:
 
         TRACE("Program exited successfully");
 }
