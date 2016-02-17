@@ -32,13 +32,27 @@ typedef enum {
     IADD = 0x02,
     ISUB = 0x03,
     IMUL = 0x04,
-    HALT = 0x05,
+    INC  = 0x05,
+    DEC  = 0x06,
+    HALT = 0x07,
+
 } Instruction;
+
+//typedef enum {
+//    RA = 0x00,
+//    RB = 0x01,
+//    RC = 0x02,
+//    RD = 0x03,
+//    RE = 0x04,
+//    RF = 0x05,
+//    DP = 0x12,
+//
+//};
 static uint8_t vm_fetch(VM *vm);
 
 static void vm_push(VM *vm, uint16_t value);
 
-uint16_t vm_pop(VM *vm);
+static uint16_t vm_pop(VM *vm);
 typedef struct {
     int return_ip;
     uint16_t arg1;

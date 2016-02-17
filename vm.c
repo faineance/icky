@@ -4,8 +4,7 @@
 #define  DISPATCH  { goto *labels[vm->code[vm->DP++]]; }
 
 static inline uint8_t vm_fetch(VM *vm) {
-    vm->DP += 1;
-    return vm->code[vm->DP];
+    return vm->code[vm->DP++];
 }
 
 
@@ -13,12 +12,12 @@ static inline void vm_push(VM *vm, uint16_t value) {
     vm->stack[++vm->SP] = value;
 }
 
-uint16_t vm_pop(VM *vm) {
+static uint16_t vm_pop(VM *vm) {
     return vm->stack[vm->SP--];
 }
 
 void vm_run(VM *vm) {
-    static  void* labels[6] = { &&push, &&pop, &&iadd, &&isub, &&imul, &&halt};
+    static  void* labels[8] = { &&push, &&pop, &&iadd, &&isub, &&imul, &&inc, &&dec, &&halt};
 
     uint8_t d1, d2;
     uint16_t v;
@@ -27,9 +26,10 @@ void vm_run(VM *vm) {
     push:
         d1 = vm_fetch(vm);
         d2 = vm_fetch(vm);
+
         v = (d2 << 8) | d1;
         vm_push(vm, v);
-
+        TRACE("Pushed %d", v);
         DISPATCH
     pop:
         v = vm->stack[vm->SP--];
@@ -37,7 +37,7 @@ void vm_run(VM *vm) {
         DISPATCH
     iadd:
         vm_push(vm, vm_pop(vm) + vm_pop(vm));
-
+        
         DISPATCH
     isub:
         vm_push(vm, vm_pop(vm) - vm_pop(vm));
@@ -45,7 +45,11 @@ void vm_run(VM *vm) {
     imul:
         vm_push(vm, vm_pop(vm) * vm_pop(vm));
         DISPATCH
-
+    inc:
+        vm_push(vm, vm_pop(vm) + 1);
+    dec:
+        vm_push(vm, vm_pop(vm) - 1);
+    
     halt:
 
         TRACE("Program exited successfully");
