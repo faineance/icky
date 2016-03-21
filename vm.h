@@ -26,6 +26,7 @@ VM *vm_create(uint8_t *code, int code_len);
 void vm_free(VM *vm);
 
 void vm_run(VM *vm);
+
 typedef enum {
     PUSH = 0x00,
     POP  = 0x01,
@@ -35,7 +36,6 @@ typedef enum {
     INC  = 0x05,
     DEC  = 0x06,
     HALT = 0x07,
-
 } Instruction;
 
 //typedef enum {
@@ -53,6 +53,7 @@ static uint8_t vm_fetch(VM *vm);
 static void vm_push(VM *vm, uint16_t value);
 
 static uint16_t vm_pop(VM *vm);
+
 typedef struct {
     int return_ip;
     uint16_t arg1;

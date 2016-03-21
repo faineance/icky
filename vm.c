@@ -1,18 +1,18 @@
 #include <stdlib.h>
 #include "vm.h"
 #include "debug.h"
-#define  DISPATCH  { goto *labels[vm->code[vm->DP++]]; }
+#define DISPATCH  { goto *labels[vm->code[vm->DP++]]; }
+#define INLINE __always_inline
 
-static inline uint8_t vm_fetch(VM *vm) {
+static INLINE uint8_t vm_fetch(VM *vm) {
     return vm->code[vm->DP++];
 }
 
-
-static inline void vm_push(VM *vm, uint16_t value) {
+static INLINE void vm_push(VM *vm, uint16_t value) {
     vm->stack[++vm->SP] = value;
 }
 
-static uint16_t vm_pop(VM *vm) {
+static INLINE uint16_t vm_pop(VM *vm) {
     return vm->stack[vm->SP--];
 }
 
@@ -46,12 +46,12 @@ void vm_run(VM *vm) {
         vm_push(vm, vm_pop(vm) * vm_pop(vm));
         DISPATCH
     inc:
-        vm_push(vm, vm_pop(vm) + 1);
+        vm_push(vm, (uint16_t)(vm_pop(vm) + 1));
+        DISPATCH
     dec:
-        vm_push(vm, vm_pop(vm) - 1);
-    
+        vm_push(vm, (uint16_t)(vm_pop(vm) - 1));
+        DISPATCH
     halt:
-
         TRACE("Program exited successfully");
 }
 
@@ -62,7 +62,6 @@ void vm_free(VM *vm) {
 
 VM *vm_create(uint8_t *code, int code_len) {
     VM *vm = calloc(1, sizeof(VM));
-
 
     vm->SP = 0;
     vm->DP = 0;

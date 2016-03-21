@@ -7,6 +7,7 @@ int main() {
             PUSH, 0x01, 0x00,
             PUSH, 0x03, 0x00,
             IADD,
+            POP,
             HALT
     };
     VM *vm = vm_create(hello, sizeof(hello));
